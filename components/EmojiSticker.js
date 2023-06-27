@@ -13,10 +13,10 @@ import Animated, {
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 export default function EmojiSticker({ imageSize, stickerSource }) {
+  const scaleImage = useSharedValue(imageSize);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const AnimatedImage = Animated.createAnimatedComponent(Image);
-  const scaleImage = useSharedValue(imageSize);
 
   const onDrag = useAnimatedGestureHandler({
     onStart: (event, context) => {
@@ -26,6 +26,14 @@ export default function EmojiSticker({ imageSize, stickerSource }) {
     onActive: (event, context) => {
       translateX.value = event.translationX + context.translateX;
       translateY.value = event.translationY + context.translateY;
+    },
+  });
+
+  const onDoubleTap = useAnimatedGestureHandler({
+    onActive: () => {
+      if (scaleImage.value !== imageSize * 2) {
+        scaleImage.value = scaleImage.value * 2;
+      }
     },
   });
 
@@ -42,14 +50,6 @@ export default function EmojiSticker({ imageSize, stickerSource }) {
     };
   });
 
-  const onDoubleTap = useAnimatedGestureHandler({
-    onActive: () => {
-      if (scaleImage.value !== imageSize * 2) {
-        scaleImage.value = scaleImage.value * 2;
-      }
-    },
-  });
-
   const imageStyle = useAnimatedStyle(() => {
     return {
       width: withSpring(scaleImage.value),
@@ -64,7 +64,7 @@ export default function EmojiSticker({ imageSize, stickerSource }) {
           <AnimatedImage
             source={stickerSource}
             resizeMode="contain"
-            style={{ width: imageSize, height: imageSize }}
+            style={[imageStyle, { width: imageSize, height: imageSize }]}
           />
         </TapGestureHandler>
       </AnimatedView>
