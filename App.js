@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, Platform } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import { useState, useRef } from "react";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "./components/ImageViewer";
@@ -128,7 +128,7 @@ export default function App() {
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </GestureHandlerRootView>
   );
 }
