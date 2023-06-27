@@ -10,10 +10,12 @@ import EmojiPicker from "./components/EmojiPicker";
 import EmojiList from "./components/EmojiList";
 import EmojiSticker from "./components/EmojiSticker";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as MediaLibrary from "expo-media-library";
 
 const PlaceholderImage = require("./assets/images/background-image.png");
 
 export default function App() {
+  const [status, requestPermission] = MediaLibrary.usePermissions();
   const [selectedImage, setSelectedImage] = useState(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,6 +50,10 @@ export default function App() {
       alert("You did not select any image.");
     }
   };
+
+  if (status === null) {
+    requestPermission();
+  }
 
   return (
     <GestureHandlerRootView style={styles.container}>
